@@ -1,0 +1,30 @@
+---
+interface Props {
+  lang: 'en' | 'pt';
+}
+
+const { lang } = Astro.props;
+const isEn = lang === 'en';
+---
+
+<div class="flex items-center gap-1 text-sm">
+  <a
+    href="/portfolio/en/"
+    class:list={[
+      'px-2 py-1 rounded transition-colors',
+      isEn ? 'text-accent font-medium' : 'text-text-muted hover:text-text-primary',
+    ]}
+  >
+    EN
+  </a>
+  <span class="text-border">/</span>
+  <a
+    href="/portfolio/pt/"
+    class:list={[
+      'px-2 py-1 rounded transition-colors',
+      !isEn ? 'text-accent font-medium' : 'text-text-muted hover:text-text-primary',
+    ]}
+  >
+    PT
+  </a>
+</div>
