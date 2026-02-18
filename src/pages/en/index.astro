@@ -1,0 +1,28 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Navbar from '@/components/Navbar.astro';
+import Hero from '@/components/Hero.astro';
+import About from '@/components/About.astro';
+import Skills from '@/components/Skills.astro';
+import Projects from '@/components/Projects.astro';
+import Experience from '@/components/Experience.astro';
+import Contact from '@/components/Contact.astro';
+import Footer from '@/components/Footer.astro';
+import { getLangFromUrl, getTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = getTranslations(lang);
+---
+
+<Layout title="Guilherme Mendes | Backend Developer" description={t.hero.description} lang={lang}>
+  <Navbar lang={lang} t={t} />
+  <main>
+    <Hero lang={lang} t={t} />
+    <About lang={lang} t={t} />
+    <Skills lang={lang} t={t} />
+    <Projects lang={lang} t={t} />
+    <Experience lang={lang} t={t} />
+    <Contact lang={lang} t={t} />
+  </main>
+  <Footer lang={lang} t={t} />
+</Layout>
