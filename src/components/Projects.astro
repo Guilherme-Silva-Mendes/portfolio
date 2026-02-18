@@ -1,0 +1,76 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import { projects } from '@/data/portfolio';
+import type { Language } from '@/i18n/utils';
+
+interface Props {
+  lang: Language;
+  t: Record<string, any>;
+}
+
+const { t } = Astro.props;
+const projectsT = t.projects as Record<string, any>;
+const projectItems = projectsT.items as Array<{ title: string; description: string }>;
+---
+
+<section id="projects" class="section-spacing section-container">
+  <SectionHeader title={projectsT.title} subtitle={projectsT.subtitle} />
+
+  <div class="grid md:grid-cols-2 gap-8 mt-14">
+    {projects.map((project, i) => (
+      <article
+        class="rounded-xl border border-border hover:border-border-hover transition-all duration-300 hover:shadow-sm overflow-hidden"
+        data-animate
+        data-delay={String(100 + i * 150)}
+      >
+        <div class="h-48 overflow-hidden bg-bg-secondary">
+          <img
+            src={project.image}
+            alt={projectItems[i].title}
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+        </div>
+        <div class="p-6">
+          <h3 class="text-lg font-semibold text-text-primary">{projectItems[i].title}</h3>
+          <p class="text-sm text-text-secondary mt-2 leading-relaxed">{projectItems[i].description}</p>
+          <div class="flex flex-wrap gap-2 mt-4">
+            {project.tags.map((tag) => (
+              <span class="text-xs px-2.5 py-1 bg-accent-light text-accent rounded-md font-medium">
+                {tag}
+              </span>
+            ))}
+          </div>
+          <div class="flex gap-3 mt-5">
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-accent transition-colors"
+              >
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                </svg>
+                GitHub
+              </a>
+            )}
+            {project.live && (
+              <a
+                href={project.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-accent transition-colors"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" />
+                </svg>
+                Live
+              </a>
+            )}
+          </div>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
