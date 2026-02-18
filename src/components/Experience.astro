@@ -1,0 +1,52 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import type { Language } from '@/i18n/utils';
+
+interface Props {
+  lang: Language;
+  t: Record<string, any>;
+}
+
+const { t } = Astro.props;
+const expT = t.experience as Record<string, any>;
+const items = expT.items as Array<{
+  company: string;
+  role: string;
+  period: string;
+  description: string[];
+}>;
+---
+
+<section id="experience" class="section-spacing section-container">
+  <SectionHeader title={expT.title} subtitle={expT.subtitle} />
+
+  <div class="relative mt-14">
+    <!-- Timeline line -->
+    <div class="absolute left-[5px] top-2 bottom-2 w-px bg-border"></div>
+
+    <div class="space-y-12">
+      {items.map((exp, i) => (
+        <div
+          class="relative pl-10"
+          data-animate
+          data-delay={String(100 + i * 120)}
+        >
+          <!-- Timeline dot -->
+          <div class="absolute left-0 top-1.5 w-[11px] h-[11px] rounded-full bg-accent border-2 border-bg"></div>
+
+          <span class="text-xs text-text-muted font-medium">{exp.period}</span>
+          <h3 class="text-base font-semibold text-text-primary mt-1">{exp.role}</h3>
+          <p class="text-sm text-accent">{exp.company}</p>
+          <ul class="mt-3 space-y-1.5">
+            {exp.description.map((item) => (
+              <li class="text-sm text-text-secondary flex items-start gap-2">
+                <span class="w-1 h-1 rounded-full bg-text-muted mt-2 shrink-0"></span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
