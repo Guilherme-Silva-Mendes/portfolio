@@ -1,0 +1,50 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import type { Language } from '@/i18n/utils';
+
+interface Props {
+  lang: Language;
+  t: Record<string, any>;
+}
+
+const { t } = Astro.props;
+const about = t.about as Record<string, any>;
+
+const highlightKeys = ['cleanCode', 'cicd', 'docker', 'automation', 'aiAgents', 'backend'] as const;
+
+const highlightIcons: Record<string, string> = {
+  cleanCode: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',
+  cicd: 'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15',
+  docker: 'M20 7h-4V3h-2v4h-4V3H8v4H4a1 1 0 00-1 1v5a7 7 0 007 7h4a7 7 0 007-7V8a1 1 0 00-1-1z',
+  automation: 'M13 10V3L4 14h7v7l9-11h-7z',
+  aiAgents: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z',
+  backend: 'M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01',
+};
+---
+
+<section id="about" class="section-spacing section-container">
+  <SectionHeader title={about.title} subtitle={about.subtitle} />
+
+  <div class="grid md:grid-cols-2 gap-12 mt-14">
+    <div data-animate data-delay="100">
+      <p class="text-text-secondary leading-relaxed mb-4">{about.bio}</p>
+      <p class="text-text-secondary leading-relaxed">{about.bioExtra}</p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4" data-animate data-delay="200">
+      {highlightKeys.map((key, i) => (
+        <div
+          class="p-4 rounded-lg border border-border hover:border-border-hover transition-colors"
+          data-animate
+          data-delay={String(250 + i * 80)}
+        >
+          <svg class="w-5 h-5 text-accent mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d={highlightIcons[key]} />
+          </svg>
+          <h4 class="text-sm font-semibold text-text-primary">{about.highlights[key].title}</h4>
+          <p class="text-xs text-text-muted mt-1 leading-relaxed">{about.highlights[key].description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
