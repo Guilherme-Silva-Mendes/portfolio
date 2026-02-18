@@ -1,0 +1,117 @@
+---
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { navLinks } from '@/data/portfolio';
+import type { Language } from '@/i18n/utils';
+
+interface Props {
+  lang: Language;
+  t: Record<string, any>;
+}
+
+const { lang, t } = Astro.props;
+const nav = t.nav as Record<string, string>;
+---
+
+<nav
+  id="navbar"
+  class="fixed top-0 left-0 right-0 z-50 bg-bg/95 backdrop-blur-sm border-b border-transparent transition-[border-color] duration-300"
+>
+  <div class="section-container flex items-center justify-between h-16">
+    <a href="#hero" class="text-lg font-semibold text-text-primary hover:text-accent transition-colors">
+      GM
+    </a>
+
+    <div class="hidden md:flex items-center gap-8">
+      {navLinks.map((link) => (
+        <a
+          href={`#${link.to}`}
+          class="nav-link text-sm text-text-secondary hover:text-accent transition-colors"
+          data-section={link.to}
+        >
+          {nav[link.id]}
+        </a>
+      ))}
+    </div>
+
+    <div class="flex items-center gap-4">
+      <LanguageSwitcher lang={lang} />
+      <button
+        id="mobile-menu-btn"
+        class="md:hidden p-2 text-text-secondary hover:text-text-primary transition-colors"
+        aria-label="Menu"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-bg">
+    <div class="section-container py-4 flex flex-col gap-3">
+      {navLinks.map((link) => (
+        <a
+          href={`#${link.to}`}
+          class="mobile-nav-link text-sm text-text-secondary hover:text-accent transition-colors py-1"
+          data-section={link.to}
+        >
+          {nav[link.id]}
+        </a>
+      ))}
+    </div>
+  </div>
+</nav>
+
+<script>
+  function initNavbar() {
+    const navbar = document.getElementById('navbar');
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+
+    // Scroll border
+    const onScroll = () => {
+      if (navbar) {
+        navbar.classList.toggle('border-border', window.scrollY > 10);
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Mobile menu toggle
+    btn?.addEventListener('click', () => {
+      menu?.classList.toggle('hidden');
+    });
+
+    // Close mobile menu on link click
+    menu?.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        menu.classList.add('hidden');
+      });
+    });
+
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            navLinks.forEach((link) => {
+              const isActive = link.getAttribute('data-section') === id;
+              link.classList.toggle('text-accent', isActive);
+              link.classList.toggle('text-text-secondary', !isActive);
+            });
+          }
+        });
+      },
+      { rootMargin: '-20% 0px -70% 0px' },
+    );
+
+    sections.forEach((section) => sectionObserver.observe(section));
+  }
+
+  initNavbar();
+  document.addEventListener('astro:page-load', initNavbar);
+</script>
