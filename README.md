@@ -4,7 +4,7 @@ Personal portfolio website showcasing my work as a Backend Developer, Team Leade
 
 ## Live Demo
 
-[https://guilherme-silva-mendes.github.io/portfolio/](https://guilherme-silva-mendes.github.io/portfolio/)
+[https://guilherme-silva-mendes.github.io/portfolio/](https://guilherme-silva-mendes.github.io/portfolio/en)
 
 ## Tech Stack
 
